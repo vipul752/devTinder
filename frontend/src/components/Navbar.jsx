@@ -1,39 +1,98 @@
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, redirect } from "react-router-dom";
+import { BASE_URL } from "../utils/constant";
+import toast, { Toaster } from "react-hot-toast";
+import { removeUser } from "../utils/userSlice";
+import { useNavigate } from "react-router-dom";
+
 const NavBar = () => {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    try {
+      const response = await axios.post(
+        BASE_URL + "/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch(removeUser());
+      toast.success(response.data, {
+        style: {
+          background: "black",
+          color: "#fff",
+        },
+      });
+      return navigate("/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
   return (
-    <div>
-      <div className="navbar bg-base-100">
-        <div className="flex-1">
-          <a className="btn btn-ghost text-2xl">DevTinder</a>
-        </div>
-        <div className="flex-none gap-2">
-          <div className="dropdown dropdown-end mx-7">
+    <nav className="navbar bg-base-100 shadow-md">
+      <Toaster position="bottom-right" reverseOrder={false} />
+      {/* Brand Name */}
+      <div className="flex-1">
+        <Link
+          to="/"
+          className="btn rounded-xl hover:bg-gray-900 btn-ghost text-2xl font-bold"
+        >
+          DevTinder
+        </Link>
+      </div>
+
+      {/* User Section */}
+      {user && (
+        <div className="flex-none flex items-center gap-4">
+          <p className="text-base font-medium text-gray-500">
+            Welcome, {user.firstName}
+          </p>
+
+          {/* User Dropdown */}
+          <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
               role="button"
-              className="btn btn-ghost btn-circle avatar"
+              aria-label="User Menu"
+              className="btn btn-ghost btn-circle avatar focus:outline-none"
             >
               <div className="w-10 rounded-full">
                 <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  src={user.photoUrl}
+                  alt={`${user.firstName}'s profile`}
+                  className="object-cover"
                 />
               </div>
             </div>
+
+            {/* Dropdown Menu */}
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow-lg"
             >
               <li>
-                <a className="justify-between">Profile</a>
+                <Link to="/profile" className="font-medium hover:rounded-lg">
+                  Profile
+                </Link>
               </li>
               <li>
-                <a>Logout</a>
+                <button
+                  onClick={logout}
+                  className="font-medium hover:rounded-lg text-red-600 hover:text-red-500"
+                >
+                  Logout
+                </button>
               </li>
             </ul>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </nav>
   );
 };
 
