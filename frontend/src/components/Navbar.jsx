@@ -81,6 +81,11 @@ const NavBar = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/connections" className="font-medium hover:rounded-lg">
+                  Connections
+                </Link>
+              </li>
+              <li>
                 <button
                   onClick={logout}
                   className="font-medium hover:rounded-lg text-red-600 hover:text-red-500"

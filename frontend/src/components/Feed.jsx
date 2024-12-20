@@ -35,6 +35,8 @@ const Feed = () => {
   const handleAction = (action) => {
     setSlideDirection(action === "Interested" ? "right" : "left");
 
+    
+
     setTimeout(() => {
       if (currentIndex < feed.length - 1) {
         setCurrentIndex(currentIndex + 1);
@@ -155,7 +157,7 @@ const Feed = () => {
                     onClick={() => handleAction("Ignore")}
                     className="flex-1 bg-red-500/80 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-medium backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:shadow-lg"
                   >
-                    Pass
+                    Ignore
                   </button>
                   <button
                     onClick={() => handleAction("Interested")}
