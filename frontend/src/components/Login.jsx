@@ -3,7 +3,7 @@ import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 import { addUser } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constant";
 
 function App() {
@@ -118,13 +118,6 @@ function App() {
             </div>
           </div>
 
-          {/* Forgot Password */}
-          <div className="text-right mt-2">
-            <a href="#" className="text-blue-400 text-sm hover:underline">
-              Forgot password?
-            </a>
-          </div>
-
           {/* Submit Button */}
           <button
             type="submit"
@@ -144,10 +137,10 @@ function App() {
         <div className="space-y-4 flex items-center justify-center">
           <p>
             Create an Account?
-            <a href="#" className="text-blue-400 hover:underline">
+            <Link to="/signup" className="text-blue-400 hover:underline">
               {" "}
               Sign Up
-            </a>
+            </Link>
           </p>
         </div>
       </div>

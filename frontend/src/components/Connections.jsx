@@ -10,7 +10,9 @@ import {
   Code,
   AlertCircle,
   Loader2,
+  ArrowLeft,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Connections = () => {
   const dispatch = useDispatch();
@@ -45,7 +47,7 @@ const Connections = () => {
   }, []);
 
   const ConnectionCard = ({ connection }) => (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+    <div className="bg-white  rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
       <div className="p-6">
         <div className="flex items-start gap-4">
           <div className="bg-gray-100 rounded-full p-3">
@@ -100,29 +102,34 @@ const Connections = () => {
 
   if (error) {
     return (
-      <div className="container mx-auto p-4">
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+      <div className="container  h-screen  mx-auto p-4">
+        <div className="bg-red-50 border mb-12 border-red-200 text-red-700 px-3 py-2 rounded text-sm">
           <div className="flex items-center">
-            <AlertCircle className="h-4 w-4 mr-2" />
+            <AlertCircle className="h-4 w-4 mr-2 " />
             <p>{error}</p>
           </div>
         </div>
+        <Link
+          to="/"
+          className="absolute justify-between right-20 flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200 group bg-black bg-opacity-50 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-700 hover:border-gray-500"
+        >
+          <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform duration-200" />
+          <span>Go Back</span>
+        </Link>
       </div>
     );
   }
 
   if (!connections.length) {
     return (
-      <div className="container mx-auto p-4 text-center">
-        <div className="max-w-md mx-auto">
-          <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded">
-            <div className="flex items-center justify-center">
-              <AlertCircle className="h-4 w-4 mr-2" />
-              <p>
-                No connections found. Start connecting with other users to see
-                them here!
-              </p>
-            </div>
+      <div className="flex items-center justify-center h-screen p-4">
+        <div className="w-full bg-blue-50 border border-blue-200 text-blue-700 px-3 py-2 rounded text-sm">
+          <div className="flex items-center">
+            <AlertCircle className="h-4 w-4 mr-2" />
+            <p>
+              No connections found. Start connecting with other users to see
+              them here!
+            </p>
           </div>
         </div>
       </div>
@@ -130,7 +137,7 @@ const Connections = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container  mx-auto p-4">
       <h1 className="text-3xl font-bold mb-8 text-center">
         My Connections ({connections.length})
       </h1>

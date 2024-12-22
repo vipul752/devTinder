@@ -27,7 +27,7 @@ const NavBar = () => {
           color: "#fff",
         },
       });
-      return navigate("/login");
+      navigate("/login");
     } catch (error) {
       console.error("Logout failed", error);
     }
@@ -76,13 +76,26 @@ const NavBar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow-lg"
             >
               <li>
+                <Link to="/" className="font-medium hover:rounded-lg">
+                  Home
+                </Link>
+              </li>
+              <li>
                 <Link to="/profile" className="font-medium hover:rounded-lg">
                   Profile
                 </Link>
               </li>
               <li>
-                <Link to="/connections" className="font-medium hover:rounded-lg">
+                <Link
+                  to="/connections"
+                  className="font-medium hover:rounded-lg"
+                >
                   Connections
+                </Link>
+              </li>
+              <li>
+                <Link to="/request" className="font-medium hover:rounded-lg">
+                  Request
                 </Link>
               </li>
               <li>

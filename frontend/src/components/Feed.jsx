@@ -9,6 +9,7 @@ const Feed = () => {
   const dispatch = useDispatch();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(false);
   const [slideDirection, setSlideDirection] = useState("");
   const [error, setError] = useState(null);
 
@@ -16,7 +17,7 @@ const Feed = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get(BASE_URL + "/feed?page=1&limit=10", {
+      const response = await axios.get(BASE_URL + "/feed?page=1&limit=25", {
         withCredentials: true,
       });
       dispatch(addFeed(response.data.data));
@@ -32,17 +33,36 @@ const Feed = () => {
     getFeed();
   }, []);
 
-  const handleAction = (action) => {
-    setSlideDirection(action === "Interested" ? "right" : "left");
+  const handleAction = async (action) => {
+    if (actionLoading) return; // Prevent multiple clicks while processing
 
-    
+    const currentUser = feed[currentIndex];
+    const status = action === "Interested" ? "interested" : "ignored";
 
-    setTimeout(() => {
-      if (currentIndex < feed.length - 1) {
-        setCurrentIndex(currentIndex + 1);
-      }
-      setSlideDirection("");
-    }, 300);
+    try {
+      setActionLoading(true);
+      setSlideDirection(action === "Interested" ? "right" : "left");
+
+      await axios.post(
+        `${BASE_URL}/connection/send/${status}/${currentUser._id}`,
+        {},
+        { withCredentials: true }
+      );
+
+      // Wait for animation to complete before moving to next profile
+      setTimeout(() => {
+        if (currentIndex < feed.length - 1) {
+          setCurrentIndex(currentIndex + 1);
+        }
+        setSlideDirection("");
+      }, 300);
+    } catch (error) {
+      console.error("Action failed:", error);
+      setError(error.response?.data?.error || "Failed to process your request");
+      setSlideDirection(""); // Reset animation if there's an error
+    } finally {
+      setActionLoading(false);
+    }
   };
 
   if (loading) {
@@ -72,7 +92,10 @@ const Feed = () => {
           </svg>
           <p className="text-red-200">{error}</p>
           <button
-            onClick={getFeed}
+            onClick={() => {
+              setError(null);
+              getFeed();
+            }}
             className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
           >
             Try Again
@@ -83,7 +106,7 @@ const Feed = () => {
   }
 
   return (
-    <div className="min-h-screen  text-white p-6">
+    <div className="min-h-screen text-white p-6">
       <div className="max-w-md mx-auto">
         <h1 className="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent">
           Find Your Match
@@ -154,16 +177,22 @@ const Feed = () => {
 
                 <div className="flex justify-center gap-4 mt-6">
                   <button
-                    onClick={() => handleAction("Ignore")}
-                    className="flex-1 bg-red-500/80 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-medium backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                    onClick={() => handleAction("ignored")}
+                    disabled={actionLoading}
+                    className={`flex-1 bg-red-500/80 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-medium backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:shadow-lg ${
+                      actionLoading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                   >
-                    Ignore
+                    {actionLoading ? "Processing..." : "ignored"}
                   </button>
                   <button
                     onClick={() => handleAction("Interested")}
-                    className="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                    disabled={actionLoading}
+                    className={`flex-1 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 hover:scale-105 hover:shadow-lg ${
+                      actionLoading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                   >
-                    Connect
+                    {actionLoading ? "Processing..." : "Connect"}
                   </button>
                 </div>
               </div>
