@@ -111,7 +111,7 @@ const Connections = () => {
         </div>
         <Link
           to="/"
-          className="absolute justify-between right-20 flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200 group bg-black bg-opacity-50 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-700 hover:border-gray-500"
+          className="absolute justify-between top-52 right-20 flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-200 group bg-black bg-opacity-50 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-700 hover:border-gray-500"
         >
           <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform duration-200" />
           <span>Go Back</span>

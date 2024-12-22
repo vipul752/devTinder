@@ -34,7 +34,7 @@ const Feed = () => {
   }, []);
 
   const handleAction = async (action) => {
-    if (actionLoading) return; // Prevent multiple clicks while processing
+    if (actionLoading) return;
 
     const currentUser = feed[currentIndex];
     const status = action === "Interested" ? "interested" : "ignored";
@@ -43,23 +43,31 @@ const Feed = () => {
       setActionLoading(true);
       setSlideDirection(action === "Interested" ? "right" : "left");
 
-      await axios.post(
+      const response = await axios.post(
         `${BASE_URL}/connection/send/${status}/${currentUser._id}`,
         {},
         { withCredentials: true }
       );
 
-      // Wait for animation to complete before moving to next profile
+      if (
+        response.data.error &&
+        response.data.error === "Connection request already exists"
+      ) {
+        setError("Connection request already exists. Please try again.");
+        setSlideDirection("");
+        return;
+      }
+
       setTimeout(() => {
         if (currentIndex < feed.length - 1) {
           setCurrentIndex(currentIndex + 1);
         }
         setSlideDirection("");
-      }, 300);
+      }, 100);
     } catch (error) {
       console.error("Action failed:", error);
       setError(error.response?.data?.error || "Failed to process your request");
-      setSlideDirection(""); // Reset animation if there's an error
+      setSlideDirection("");
     } finally {
       setActionLoading(false);
     }
