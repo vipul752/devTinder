@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const { connectDB } = require('./config/database');
+const { connectDB } = require("./src/config/database");
 app.use(
   cors({
     origin: "http://localhost:5173",
