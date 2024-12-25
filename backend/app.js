@@ -23,6 +23,10 @@ app.use("/", profileRouter);
 app.use("/", connectionRouter);
 app.use("/", userRouter);
 
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
 connectDB()
   .then(() => {
     console.log("Database connected");
