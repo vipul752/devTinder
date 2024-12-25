@@ -35,7 +35,17 @@ const NavBar = () => {
 
   return (
     <nav className="navbar bg-base-100 shadow-md">
-      <Toaster position="bottom-right" reverseOrder={false} />
+      <Toaster 
+        position="bottom-right" 
+        reverseOrder={false} 
+        toastOptions={{
+          style: {
+            zIndex: 9999,  // Ensure toasts are always on top
+            background: "black",
+            color: "#fff",
+          }
+        }}
+      />
       {/* Brand Name */}
       <div className="flex-1">
         <Link
