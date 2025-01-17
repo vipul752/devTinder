@@ -9,6 +9,7 @@ import Profile from "./components/Profile";
 import Connections from "./components/Connections";
 import Request from "./components/Request";
 import Signup from "./components/Signup";
+import Premium from "./components/Premium";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="connections" element={<Connections />} />
               <Route path="request" element={<Request />} />
               <Route path="signup" element={<Signup />} />
+              <Route path="premium" element={<Premium />} />
             </Route>
           </Routes>
         </BrowserRouter>

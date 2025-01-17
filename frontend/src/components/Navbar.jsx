@@ -35,15 +35,15 @@ const NavBar = () => {
 
   return (
     <nav className="navbar bg-base-100 shadow-md">
-      <Toaster 
-        position="bottom-right" 
-        reverseOrder={false} 
+      <Toaster
+        position="bottom-right"
+        reverseOrder={false}
         toastOptions={{
           style: {
-            zIndex: 9999,  // Ensure toasts are always on top
+            zIndex: 9999, // Ensure toasts are always on top
             background: "black",
             color: "#fff",
-          }
+          },
         }}
       />
       {/* Brand Name */}
@@ -108,6 +108,12 @@ const NavBar = () => {
                   Request
                 </Link>
               </li>
+              <li>
+                <Link to="/premium" className="font-medium hover:rounded-lg">
+                  Premium
+                </Link>
+              </li>
+
               <li>
                 <button
                   onClick={logout}
